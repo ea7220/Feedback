@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %> | Tuki- ja palauteportaali
+  </title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <%- include("partials/header", { activePage: activePage }) %>
+
+    <main class="container">
+      <section class="page-title">
+        <div>
+          <h2>
+            <%= title %>
+          </h2>
+          <p>Tukipyyntöjen tila, asiakas ja käsittelytiedot.</p>
+        </div>
+        <span class="count">
+          <%= rows.length %> tukipyyntöä
+        </span>
+      </section>
+
+      <div class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>ID</th>
+              <th>Saapunut</th>
+              <th>Asiakas</th>
+              <th>Kuvaus</th>
+              <th>Viestit</th>
+              <th>Käsitelty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.forEach(row=> { %>
+              <tr>
+                <td>
+                  <span class="status <%= String(row.status).replaceAll(' ', '-') %>">
+                    <%= row.status %>
+                  </span>
+                </td>
+
+                <td>
+                  <a class="ticket-link" href="/tickets/single?id=<%= row.id %>">
+                    #<%= row.id %>
+                  </a>
+                </td>
+
+                <td>
+                  <%= row.arrived ? new Date(row.arrived).toLocaleString("fi-FI") : "-" %>
+                </td>
+                <td><strong>
+                    <%= row.customer_name || "-" %>
+                  </strong></td>
+                <td>
+                  <%= row.description || "-" %>
+                </td>
+                <td>
+                  <%= row.message_count %>
+                </td>
+                <td>
+                  <%= row.handled ? new Date(row.handled).toLocaleString("fi-FI") : "Kesken" %>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+</body>
+
+</html>

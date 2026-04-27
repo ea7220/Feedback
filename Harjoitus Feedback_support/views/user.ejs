@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Käyttäjä | Tuki- ja palauteportaali</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include("partials/header", { activePage: "customers" }) %>
+
+        <main class="container">
+            <section class="page-title">
+                <a class="back-link" href="/customers">Takaisin käyttäjiin</a>
+
+                <div>
+                    <h2>Muokkaa käyttäjää</h2>
+                    <p>Käyttäjän tiedot ja salasanan vaihto.</p>
+                </div>
+            </section>
+
+            <section class="card">
+                <form class="user-form" action="/customers/user" method="POST">
+                    <input type="hidden" name="id" value="<%= user.id %>">
+
+                    <label for="fullname">Koko nimi</label>
+                    <input type="text" id="fullname" name="fullname" value="<%= user.fullname || '' %>" required>
+
+                    <label for="email">Sähköposti</label>
+                    <input type="email" id="email" name="email" value="<%= user.email || '' %>" required>
+
+                    <label for="customer_id">Asiakas</label>
+                    <select id="customer_id" name="customer_id">
+                        <option value="">Ei asiakasta</option>
+                        <% customers.forEach(c=> { %>
+                            <option value="<%= c.id %>" <%=Number(c.id)===Number(user.customer_id) ? "selected" : "" %>>
+                                <%= c.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+
+                    <label class="checkbox-row">
+                        <input type="checkbox" name="mailing_list" <%=user.mailing_list ? "checked" : "" %>
+                        >
+                        Postituslistalla
+                    </label>
+
+                    <label class="checkbox-row">
+                        <input type="checkbox" name="admin" <%=user.admin ? "checked" : "" %>
+                        >
+                        Admin-käyttäjä
+                    </label>
+
+                    <label for="password">Uusi salasana</label>
+                    <input type="password" id="password" name="password" placeholder="Jätä tyhjäksi jos et vaihda">
+
+                    <button type="submit">Tallenna</button>
+                </form>
+            </section>
+        </main>
+</body>
+
+</html>

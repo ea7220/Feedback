@@ -1,0 +1,17 @@
+<nav class="nav" aria-label="Päävalikko">
+  <a class="<%= activePage === 'customers' ? 'active' : '' %>" href="/customers">
+    Asiakkaat ja käyttäjät
+  </a>
+
+  <a class="<%= activePage === 'tickets' ? 'active' : '' %>" href="/tickets">
+    Tukipyynnöt
+  </a>
+
+  <a class="<%= activePage === 'feedback' ? 'active' : '' %>" href="/feedback">
+    Palautteet
+  </a>
+
+  <form action="/logout" method="POST" class="logout-form">
+    <button type="submit">Kirjaudu ulos</button>
+  </form>
+</nav>

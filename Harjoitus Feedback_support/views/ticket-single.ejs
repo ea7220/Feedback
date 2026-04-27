@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tukipyyntö #<%= ticket.id %> | Tuki- ja palauteportaali</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include("partials/header", { activePage: "tickets" }) %>
+
+        <main class="container">
+            <section class="page-title">
+                <a class="back-link" href="/tickets">Takaisin tukipyyntöihin</a>
+
+                <div>
+                    <h2>Tukipyyntö #<%= ticket.id %>
+                    </h2>
+                    <p>Yksittäisen tukipyynnön tiedot ja viestit.</p>
+                </div>
+            </section>
+
+            <div class="card ticket-detail">
+                <div class="ticket-row">
+                    <div>
+                        <strong>ID:</strong>
+                        <p>
+                            <%= ticket.id %>
+                        </p>
+                    </div>
+
+                    <div>
+                        <strong>Asiakas:</strong>
+                        <p>
+                            <%= ticket.customer_name || "-" %>
+                        </p>
+                    </div>
+
+                    <div>
+                        <form class="status-form" action="/tickets/single/status" method="POST">
+                            <input type="hidden" name="ticket_id" value="<%= ticket.id %>">
+
+                            <label for="status"><strong>Tila:</strong></label>
+
+                            <select name="status" id="status">
+                                <% statuses.forEach(status=> { %>
+                                    <option value="<%= status.id %>" <%=Number(status.id)===Number(ticket.status_id)
+                                        ? "selected" : "" %>>
+                                        <%= status.description %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+
+                            <button type="submit">Tallenna</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="ticket-row">
+                    <div>
+                        <strong>Saapunut:</strong>
+                        <p>
+                            <%= ticket.arrived ? new Date(ticket.arrived).toLocaleString("fi-FI") : "-" %>
+                        </p>
+                    </div>
+
+                    <div>
+                        <strong>Käsitelty:</strong>
+                        <p>
+                            <%= ticket.handled ? new Date(ticket.handled).toLocaleString("fi-FI") : "Kesken" %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ticket-description">
+                    <strong>Kuvaus:</strong>
+                    <p>
+                        <%= ticket.description || "-" %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card table-wrap">
+                <h3>Viestit</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aika</th>
+                            <th>Lähettäjä</th>
+                            <th>Viesti</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% messages.forEach(message=> { %>
+                            <tr>
+                                <td>
+                                    <%= message.created_at ? new Date(message.created_at).toLocaleString("fi-FI") : "-"
+                                        %>
+                                </td>
+                                <td><strong>
+                                        <%= message.sender || "Tuntematon" %>
+                                    </strong></td>
+                                <td>
+                                    <%= message.body %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <form class="reply-form" action="/tickets/single" method="POST">
+                <input type="hidden" name="ticket_id" value="<%= ticket.id %>">
+                <textarea name="message" placeholder="Kirjoita vastaus..." required></textarea>
+                <button type="submit">Vastaa</button>
+            </form>
+        </main>
+</body>
+
+</html>

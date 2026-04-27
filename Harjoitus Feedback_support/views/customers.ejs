@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %> | Tuki- ja palauteportaali
+  </title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <%- include("partials/header", { activePage: activePage }) %>
+
+    <main class="container">
+      <section class="page-title">
+        <div>
+          <h2>
+            <%= title %>
+          </h2>
+          <p>Lista asiakkaista ja heidän käyttäjistään.</p>
+        </div>
+        <span class="count">
+          <%= rows.length %> käyttäjää
+        </span>
+      </section>
+
+      <div class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Asiakas</th>
+              <th>ID</th>
+              <th>Koko nimi</th>
+              <th>Email</th>
+              <th>Postituslista</th>
+              <th>Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.forEach(row=> { %>
+              <tr>
+                <td><strong>
+                    <%= row.customer_name || "Sisäinen tuki" %>
+                  </strong></td>
+
+                <td>
+                  <%= row.user_id || "-" %>
+                </td>
+
+                <td>
+                  <% if (row.user_id) { %>
+                    <a class="ticket-link" href="/customers/user?id=<%= row.user_id %>">
+                      <%= row.fullname %>
+                    </a>
+                    <% } else { %>
+                      -
+                      <% } %>
+                </td>
+
+                <td>
+                  <%= row.email || "-" %>
+                </td>
+
+                <td>
+                  <span class="badge <%= row.mailing_list ? 'ok' : 'muted' %>">
+                    <%= row.mailing_list ? "kyllä" : "ei" %>
+                  </span>
+                </td>
+
+                <td>
+                  <span class="badge <%= row.admin ? 'admin' : 'muted' %>">
+                    <%= row.admin ? "kyllä" : "ei" %>
+                  </span>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+</body>
+
+</html>

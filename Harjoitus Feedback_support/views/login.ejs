@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirjaudu sisään</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <main class="container login-page">
+        <section class="card login-card">
+            <h1>Tuki- ja palauteportaali</h1>
+            <h2>Kirjaudu sisään</h2>
+
+            <% if (error) { %>
+                <p class="error-text">
+                    <%= error %>
+                </p>
+                <% } %>
+
+                    <form action="/login" method="POST" class="login-form">
+
+                        <label for="login">Admin ID tai sähköposti</label>
+                        <input type="text" id="login" name="login" placeholder="support@feedback.example.com" required>
+
+                        <label for="password">Salasana</label>
+                        <input type="password" id="password" name="password" placeholder="Salasana" required>
+
+                        <button type="submit">Kirjaudu</button>
+                    </form>
+        </section>
+    </main>
+</body>
+
+</html>
