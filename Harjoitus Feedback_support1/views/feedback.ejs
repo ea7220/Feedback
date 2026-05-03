@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <%- include("partials/header", { activePage: activePage }) %>
+  <%- include("header", { activePage: activePage }) %>
 
     <main class="container">
       <section class="page-title">
@@ -19,10 +19,10 @@
           <h2>
             <%= title %>
           </h2>
-          <p>Lista asiakkaista ja heidän käyttäjistään.</p>
+          <p>Asiakkaiden ja vieraiden antama palaute.</p>
         </div>
         <span class="count">
-          <%= rows.length %> käyttäjää
+          <%= rows.length %> palautetta
         </span>
       </section>
 
@@ -31,48 +31,39 @@
           <thead>
             <tr>
               <th>Asiakas</th>
-              <th>ID</th>
-              <th>Koko nimi</th>
+              <th>Saapunut</th>
+              <th>Lähettäjä</th>
               <th>Email</th>
-              <th>Postituslista</th>
-              <th>Admin</th>
+              <th>Palaute</th>
+              <th>Käsitelty</th>
             </tr>
           </thead>
           <tbody>
             <% rows.forEach(row=> { %>
               <tr>
                 <td><strong>
-                    <%= row.customer_name || "Sisäinen tuki" %>
+                    <%= row.customer_name || "Vieras" %>
                   </strong></td>
-
                 <td>
-                  <%= row.user_id || "-" %>
+                  <%= row.arrived ? row.arrived.toLocaleString("fi-FI") : "-" %>
                 </td>
-
                 <td>
-                  <% if (row.user_id) { %>
-                    <a class="ticket-link" href="/customers/user?id=<%= row.user_id %>">
-                      <%= row.fullname %>
-                    </a>
+                  <%= row.user_name || row.guest_name || "Anonyymi" %>
+                </td>
+                <td>
+                  <%= row.email || row.guest_email || "-" %>
+                </td>
+                <td>
+                  <%= row.feedback || "-" %>
+                </td>
+                <td>
+                  <% if (row.handled) { %>
+                    <span class="badge ok">
+                      <%= row.handled.toLocaleString("fi-FI") %>
+                    </span>
                     <% } else { %>
-                      -
+                      <span class="badge warning">Kesken</span>
                       <% } %>
-                </td>
-
-                <td>
-                  <%= row.email || "-" %>
-                </td>
-
-                <td>
-                  <span class="badge <%= row.mailing_list ? 'ok' : 'muted' %>">
-                    <%= row.mailing_list ? "kyllä" : "ei" %>
-                  </span>
-                </td>
-
-                <td>
-                  <span class="badge <%= row.admin ? 'admin' : 'muted' %>">
-                    <%= row.admin ? "kyllä" : "ei" %>
-                  </span>
                 </td>
               </tr>
               <% }) %>

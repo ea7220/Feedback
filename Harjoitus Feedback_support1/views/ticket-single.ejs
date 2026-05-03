@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <%- include("partials/header", { activePage: "tickets" }) %>
+    <%- include("header", { activePage: "tickets" }) %>
 
         <main class="container">
             <section class="page-title">
@@ -42,11 +42,11 @@
                         <form class="status-form" action="/tickets/single/status" method="POST">
                             <input type="hidden" name="ticket_id" value="<%= ticket.id %>">
 
-                            <label for="status"><strong>Tila:</strong></label>
+                            <label for="status_id"><strong>Tila:</strong></label>
 
-                            <select name="status" id="status">
+                            <select name="status_id" id="status_id">
                                 <% statuses.forEach(status=> { %>
-                                    <option value="<%= status.id %>" <%=Number(status.id)===Number(ticket.status_id)
+                                    <option value="<%= status.id %>" <%=Number(status.id)===Number(ticket.status)
                                         ? "selected" : "" %>>
                                         <%= status.description %>
                                     </option>
